@@ -1,57 +1,72 @@
-// Handle Button Clicks
+// ===========================
+// Step 1: Functions
+// ===========================
 
-// Function to change the background color when a button is clicked
+// Change background color to a valid RGB color
 function changeBackgroundColor() {
-  // Implement the function to change background color
+  document.body.style.backgroundColor = "rgb(173, 216, 230)"; // lightblue in rgb
 }
 
-// Function to reset the background color when the body is double-clicked
+// Reset background color (clears it)
 function resetBackgroundColor() {
-  // Implement the function to reset background color
+  document.body.style.backgroundColor = "";
 }
 
-// Capture Keyboard Input
-
-// Function to display the key pressed by the user
+// Display key pressed in expected format
 function displayKeyPress(event) {
-  // Implement the function to display key pressed
+  const keyParagraph = document.getElementById("keyPressDisplay");
+  if (keyParagraph) keyParagraph.textContent = `Key pressed: ${event.key}`;
 }
 
-// Process Text Input
-
-// Function to display user input in real-time
+// Display user input
 function displayUserInput() {
-  // Implement the function to display user input
+  const inputValue = document.getElementById("textInput").value;
+  const displayParagraph = document.getElementById("textInputDisplay");
+  if (displayParagraph) displayParagraph.textContent = `You typed: ${inputValue}`;  // Changed from "Your input: " to "You typed: "
 }
 
-// Attach Event Listeners
+// Dynamic interaction example
+function dynamicInteraction() {
+  const inputValue = document.getElementById("textInput").value.toLowerCase();
+  if (inputValue.includes("green")) {
+    document.body.style.backgroundColor = "rgb(144, 238, 144)"; // lightgreen in rgb
+  }
+}
+
+// ===========================
+// Step 2: Setup Event Listeners
+// ===========================
+
 function setupEventListeners() {
-// Attach event listener to change background color when the button is clicked
-  document
-    .getElementById('changeColorButton')
-    .addEventListener('click', changeBackgroundColor)
+  const changeBtn = document.getElementById("changeColorButton");
+  const resetBtn = document.getElementById("resetColorButton");
+  const textInput = document.getElementById("textInput");
 
-  // Attach event listener to reset background color when the body is double-clicked
-  document
-    .getElementById('resetColorButton')
-    .addEventListener('dblclick', resetBackgroundColor)
+  if (changeBtn) changeBtn.addEventListener("click", changeBackgroundColor);
+  if (resetBtn) resetBtn.addEventListener("dblclick", resetBackgroundColor); // tests expect dblclick
+  if (textInput) {
+    textInput.addEventListener("input", displayUserInput);
+    textInput.addEventListener("input", dynamicInteraction);
+  }
 
-  // Attach event listener to display key pressed when a key is pressed down
-  document.addEventListener('keydown', displayKeyPress)
-
-  // Attach event listener to display user input in real-time as they type
-  document.getElementById('textInput').addEventListener('input', displayUserInput)
+  document.addEventListener("keydown", displayKeyPress);
 }
 
-// Initialize event listeners when the DOM is loaded
-if (typeof window !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', setupEventListeners)
+// Only run in browser
+if (typeof document !== "undefined") {
+  document.addEventListener("DOMContentLoaded", setupEventListeners);
 }
+
+// ===========================
+// ===========================
+// Step 3: Export Functions for Jest Tests
+// ===========================
 
 module.exports = {
   changeBackgroundColor,
   resetBackgroundColor,
   displayKeyPress,
   displayUserInput,
-  setupEventListeners,
-}
+  dynamicInteraction,
+  setupEventListeners
+};
